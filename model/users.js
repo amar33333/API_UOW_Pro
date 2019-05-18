@@ -8,7 +8,10 @@ var Schema=new Schema({
     username:{type:String,require:true},
     staff:{type:String,require:true},
     password:{type:String,require:true},
-    creation_dt:{type:Date,require:true}
+    creation_dt:{type:Date,require:true},
+    dob:{type:String,require:true},
+    mobile:{type:Number,require:true},
+    gender:{type:String,require:true}
 });
 
 Schema.statics.hashPassword=function hashPassword(password){

@@ -38,6 +38,7 @@ const id =  req.params.uid;
 })
 //get event to update 
 router.get('/updateevent/:eid',(req,res,next)=>{
+
   const id =  req.params.eid;
   Event.findOne({"_id":ObjectId(req.params.eid)},(error,event)=>{
       if(error){
@@ -165,6 +166,9 @@ async function addToDB(req,res){
      username:req.body.username,
      password:Users.hashPassword(req.body.password),
      staff:req.body.staff,
+     gender:req.body.gender,
+     mobile:req.body.mobile,
+     dob:req.body.dob,
      creation_dt:Date.now()
    });
 
@@ -261,7 +265,9 @@ router.post('/login', function(req,res,next){
 })
 router.put('/updatingevent',(function(req,res,next){
   let eid=req.body.edi;
-  Event.update({"_id":ObjectId(eid)},{$set:{"eventname":req.body.eventname,"location":req.body.location,
+  Event.update({
+    "_id":ObjectId(eid)},
+    {$set:{"eventname":req.body.eventname,"location":req.body.location,
 "capacity":req.body.capacity,"price":req.body.price,"doe":req.body.doe,
 "type":req.body.type,"promotioncode":req.body.promo
 }},(error,event)=>{
@@ -275,6 +281,28 @@ router.put('/updatingevent',(function(req,res,next){
   }
   else{
     res.send({status:200,message:"success",data:event});
+  }
+})
+}))
+
+router.put('/updatingprofile',(function(req,res,next){
+  let uid=req.body.uid;
+  Users.update({
+    "_id":ObjectId(uid)},
+    {$set:{"username":req.body.username,"email":req.body.email,
+"gender":req.body.gender,"mobile":req.body.mobile,"dob":req.body.dob,
+"staff":req.body.staff
+}},(error,user)=>{
+  if(error){
+    res.send(error);
+  }
+  else if(!user){
+    res.send({
+      status:500,message:"unsuccessful"
+    })
+  }
+  else{
+    res.send({status:200,message:"success",data:user,error:error});
   }
 })
 }))
